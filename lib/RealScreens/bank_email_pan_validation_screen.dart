@@ -202,6 +202,8 @@ class _BankPanEmailValidationScreenState
     Map valueMap = await ApiRepository().Get_User_Details();
     print(valueMap);
     String EMAIL_ID = valueMap["res_Output"][0]["email_Id"];
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString(EMAIL_ID_KEY, EMAIL_ID);
     String DOB = valueMap["res_Output"][0]["date_of_Birth"];
     String PAN_NO = valueMap["res_Output"][0]["pan_No"];
     if(EMAIL_ID.isNotEmpty&&EMAIL_ID!=""){

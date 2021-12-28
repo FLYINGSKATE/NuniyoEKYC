@@ -362,11 +362,7 @@ class _WebCamScreenState extends State<WebCamScreen> with WidgetsBindingObserver
                       double sizeInMb = sizeInBytes / (1024 * 1024);
                       //print("AAPKA FILE SIZE HAI :"+sizeInMb.toString());
 
-                      final thumbnailFile = await VideoCompress.getFileThumbnail(
-                          videoFile!.path,
-                          quality: 50, // default(100)
-                          position: -1 // default(-1)
-                      );
+                      
 
                       final MediaInfo? info = await VideoCompress.compressVideo(
                         videoFile!.path,
@@ -375,17 +371,13 @@ class _WebCamScreenState extends State<WebCamScreen> with WidgetsBindingObserver
                         includeAudio: true,
                       );
 
-                      int sizeInBytes2 = thumbnailFile.lengthSync();
-                      double sizeInMb2 = sizeInBytes / (1024 * 1024);
-                      //print("AAPKA FILE SIZE HAI :"+sizeInMb2.toString());
-
-                      List<int> byteFormatOfVideoFile = await thumbnailFile.readAsBytes();
                       //print(imageFile);
                       String fileExtension = imageFile!.path.split('/').last;
                       //print("Image From IPV Video"+fileExtension);
                       List<int> byteFormatOfImageFile = await imageFile!.readAsBytes();
-                      await ApiRepository().Video_Upload_DIO(info!.file);
                       await ApiRepository().VIPV_Selfie_Upload(byteFormatOfImageFile,fileExtension);
+                      File newVideo = File(info!.file!.path);
+                      await ApiRepository().Video_Upload_DIO(newVideo);
                       await ApiRepository().UpdateStage_Id();
                       //Once Tap Disable this button.
                       SharedPreferences prefs = await SharedPreferences.getInstance();
